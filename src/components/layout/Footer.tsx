@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ArrowRight } from 'lucide-react';
 import { useLanguage } from '../../context/LanguageContext';
 
@@ -6,6 +6,31 @@ export const Footer: React.FC = () => {
   const [email, setEmail] = useState('');
   const [subscribed, setSubscribed] = useState(false);
   const { t } = useLanguage();
+
+  const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
+  const [showInstallBtn, setShowInstallBtn] = useState(false);
+
+  useEffect(() => {
+    const handler = (e: Event) => {
+      e.preventDefault();
+      setDeferredPrompt(e);
+      setShowInstallBtn(true);
+    };
+    window.addEventListener('beforeinstallprompt', handler);
+    return () => window.removeEventListener('beforeinstallprompt', handler);
+  }, []);
+
+  const handleInstallClick = () => {
+    if (!deferredPrompt) return;
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.then((choiceResult: any) => {
+      if (choiceResult.outcome === 'accepted') {
+        console.log('User accepted the PWA install prompt in Footer');
+      }
+      setDeferredPrompt(null);
+      setShowInstallBtn(false);
+    });
+  };
 
   const handleSubscribe = (e: React.FormEvent) => {
     e.preventDefault();
@@ -109,6 +134,14 @@ export const Footer: React.FC = () => {
           <div className="flex space-x-6 mt-4 sm:mt-0">
             <a href="#" className="hover:text-white transition-colors">{t('Chính sách bảo mật', 'Privacy Policy')}</a>
             <a href="#" className="hover:text-white transition-colors">{t('Điều khoản dịch vụ', 'Terms of Service')}</a>
+            {showInstallBtn && (
+              <button
+                onClick={handleInstallClick}
+                className="hover:text-white transition-colors text-[10px] tracking-wider uppercase text-white/40 cursor-pointer focus:outline-none hidden md:block"
+              >
+                {t('Tải ứng dụng', 'Download App')}
+              </button>
+            )}
           </div>
         </div>
       </div>

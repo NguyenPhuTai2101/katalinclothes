@@ -356,21 +356,6 @@ export const TopNavBar: React.FC<TopNavBarProps> = ({ onOpenLogin }) => {
               )}
             </nav>
 
-            {showInstallBtn && (
-              <div className="px-2 mb-4">
-                <button
-                  onClick={() => {
-                    setMobileMenuOpen(false);
-                    handleInstallClick();
-                  }}
-                  className="w-full flex items-center justify-center gap-2 bg-primary text-white text-[11px] tracking-widest font-semibold uppercase py-3 rounded shadow transition cursor-pointer"
-                >
-                  <Download className="w-4 h-4" />
-                  {t('Tải Ứng Dụng Web', 'Install Web App')}
-                </button>
-              </div>
-            )}
-
             <div className="mt-auto border-t border-outline-custom pt-6 space-y-4">
               {/* Mobile Lang and Theme controls */}
               <div className="flex items-center justify-between px-2">
@@ -387,6 +372,21 @@ export const TopNavBar: React.FC<TopNavBarProps> = ({ onOpenLogin }) => {
                   </button>
                 </div>
               </div>
+
+              {showInstallBtn && (
+                <div className="px-2">
+                  <button
+                    onClick={() => {
+                      setMobileMenuOpen(false);
+                      handleInstallClick();
+                    }}
+                    className="w-full flex items-center justify-center gap-2 bg-primary text-white text-[11px] tracking-widest font-semibold uppercase py-2.5 rounded shadow transition cursor-pointer"
+                  >
+                    <Download className="w-4 h-4" />
+                    {t('Tải Ứng Dụng Web', 'Install Web App')}
+                  </button>
+                </div>
+              )}
 
               {isDefaultGuest ? (
                 <button
