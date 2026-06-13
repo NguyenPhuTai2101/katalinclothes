@@ -1,0 +1,104 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap');
+
+@import "tailwindcss";
+
+@theme {
+  --color-primary: var(--primary);
+  --color-primary-light: var(--primary-light);
+  --color-secondary: var(--secondary);
+  --color-surface: var(--surface);
+  --color-card: var(--card);
+  --color-outline-custom: var(--outline-custom);
+  --color-accent: var(--accent);
+  
+  --font-serif: "Playfair Display", Georgia, serif;
+  --font-sans: "Inter", system-ui, sans-serif;
+}
+
+:root {
+  --primary: #1a1a1a;
+  --primary-light: #333333;
+  --secondary: #767676;
+  --surface: #f9f9f9;
+  --card: #ffffff;
+  --outline-custom: #e5e5e5;
+  --accent: #b89047; /* Elegant gold */
+}
+
+:root.dark {
+  --primary: #f9f9f9;
+  --primary-light: #e5e5e5;
+  --secondary: #a3a3a3;
+  --surface: #121212;
+  --card: #1c1c1c;
+  --outline-custom: #2a2a2a;
+  --accent: #d4af37; /* Brighter gold for dark mode */
+}
+
+@layer base {
+  body {
+    background-color: var(--surface);
+    color: var(--primary);
+    font-family: "Inter", system-ui, sans-serif;
+    margin: 0;
+    padding: 0;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    font-family: "Playfair Display", Georgia, serif;
+  }
+}
+
+/* Glassmorphism utility for sticky navbar */
+.glass-nav {
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(26, 26, 26, 0.05);
+  transition: background 0.3s ease, border-color 0.3s ease;
+}
+
+.dark .glass-nav {
+  background: rgba(18, 18, 18, 0.75);
+  border-bottom: 1px solid rgba(249, 249, 249, 0.05);
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(26, 26, 26, 0.1);
+  border-radius: 2px;
+}
+.dark ::-webkit-scrollbar-thumb {
+  background: rgba(249, 249, 249, 0.1);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(26, 26, 26, 0.2);
+}
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: rgba(249, 249, 249, 0.2);
+}
+
+/* Active tab style */
+.active-nav-link {
+  position: relative;
+}
+.active-nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background-color: var(--primary);
+  transition: background-color 0.3s ease;
+}
