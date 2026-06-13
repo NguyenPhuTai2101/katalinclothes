@@ -117,11 +117,11 @@ export const Home: React.FC = () => {
 
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
           {categories.map((cat) => {
-            let imgUrl = cat.image_url || '/src/assets/products/linen_shirt_1.png';
+            let imgUrl = cat.image_url || '/assets/products/linen_shirt_1.png';
             if (!cat.image_url) {
-              if (cat.slug === 'bottoms') imgUrl = '/src/assets/products/wide_pants_1.png';
-              if (cat.slug === 'dresses') imgUrl = '/src/assets/products/silk_dress_1.png';
-              if (cat.slug === 'outerwear') imgUrl = '/src/assets/products/trench_coat_1.png';
+              if (cat.slug === 'bottoms') imgUrl = '/assets/products/wide_pants_1.png';
+              if (cat.slug === 'dresses') imgUrl = '/assets/products/silk_dress_1.png';
+              if (cat.slug === 'outerwear') imgUrl = '/assets/products/trench_coat_1.png';
             }
 
             return (
@@ -168,7 +168,7 @@ export const Home: React.FC = () => {
                 <div className="relative aspect-[3/4] bg-surface overflow-hidden rounded border border-primary/5">
                   <Link to={`/products/${prod.slug}`} className="block h-full w-full">
                     <img
-                      src={prod.images[0]?.url || '/src/assets/products/linen_shirt_1.png'}
+                      src={prod.images[0]?.url || '/assets/products/linen_shirt_1.png'}
                       alt={language === 'vi' ? prod.images[0]?.alt_vi || prod.name_vi : prod.images[0]?.alt_en || prod.name_en}
                       className="h-full w-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
                     />

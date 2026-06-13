@@ -133,7 +133,7 @@ export const ProductDetail: React.FC = () => {
         <div className="space-y-4">
           <div className="aspect-[3/4] w-full bg-surface rounded overflow-hidden border border-primary/5">
             <img
-              src={selectedImage?.url || '/src/assets/products/linen_shirt_1.png'}
+              src={selectedImage?.url || '/assets/products/linen_shirt_1.png'}
               alt={language === 'vi' ? selectedImage?.alt_vi || product.name_vi : selectedImage?.alt_en || product.name_en}
               className="w-full h-full object-cover object-center transition-all duration-300"
             />
@@ -400,7 +400,7 @@ export const ProductDetail: React.FC = () => {
                 <div className="relative aspect-[3/4] bg-surface overflow-hidden rounded border border-primary/5">
                   <Link to={`/products/${p.slug}`} className="block h-full w-full">
                     <img
-                      src={p.images[0]?.url || '/src/assets/products/linen_shirt_1.png'}
+                      src={p.images[0]?.url || '/assets/products/linen_shirt_1.png'}
                       alt={language === 'vi' ? p.name_vi : p.name_en}
                       className="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
                     />

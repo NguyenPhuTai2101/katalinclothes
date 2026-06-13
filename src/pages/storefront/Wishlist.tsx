@@ -59,7 +59,7 @@ export const Wishlist: React.FC = () => {
                 <div className="relative aspect-[3/4] bg-surface overflow-hidden rounded border border-outline-custom">
                   <Link to={`/products/${prod.slug}`} className="block h-full w-full">
                     <img
-                      src={prod.images[0]?.url || '/src/assets/products/linen_shirt_1.png'}
+                      src={prod.images[0]?.url || '/assets/products/linen_shirt_1.png'}
                       alt={prod.name_en}
                       className="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
                     />

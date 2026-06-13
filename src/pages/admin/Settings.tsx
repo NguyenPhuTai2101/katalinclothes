@@ -124,7 +124,7 @@ export const Settings: React.FC = () => {
                   value={settings.hero_image_url}
                   onChange={e => setSettings(prev => ({ ...prev, hero_image_url: e.target.value }))}
                   className="w-full bg-surface border border-outline-custom rounded px-3 py-2 text-xs text-primary focus:outline-none focus:border-accent"
-                  placeholder="/src/assets/hero/hero_fashion_1.png"
+                  placeholder="/assets/hero/hero_fashion_1.png"
                   required
                 />
                 <div className="mt-2 relative h-36 rounded overflow-hidden bg-surface border border-outline-custom flex items-center justify-center">
@@ -277,7 +277,7 @@ export const Settings: React.FC = () => {
                       value={categoryForm.image_url || ''}
                       onChange={e => setCategoryForm(prev => prev ? ({ ...prev, image_url: e.target.value }) : null)}
                       className="w-full bg-surface border border-outline-custom rounded px-3 py-2 text-xs text-primary focus:outline-none focus:border-accent"
-                      placeholder="/src/assets/products/linen_shirt_1.png"
+                      placeholder="/assets/products/linen_shirt_1.png"
                     />
                     <div className="mt-2 relative h-40 rounded overflow-hidden bg-surface border border-outline-custom flex items-center justify-center">
                       {categoryForm.image_url ? (

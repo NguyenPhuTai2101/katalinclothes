@@ -109,12 +109,12 @@ export interface Customer {
 
 // Initial default categories
 export const DEFAULT_CATEGORIES: Category[] = [
-  { id: 'cat-1', name_vi: 'Áo', name_en: 'Tops', slug: 'tops', display_order: 1, is_active: true, image_url: '/src/assets/products/linen_shirt_1.png' },
-  { id: 'cat-2', name_vi: 'Quần', name_en: 'Bottoms', slug: 'bottoms', display_order: 2, is_active: true, image_url: '/src/assets/products/wide_pants_1.png' },
-  { id: 'cat-3', name_vi: 'Váy & Đầm', name_en: 'Dresses', slug: 'dresses', display_order: 3, is_active: true, image_url: '/src/assets/products/silk_dress_1.png' },
-  { id: 'cat-4', name_vi: 'Áo khoác', name_en: 'Outerwear', slug: 'outerwear', display_order: 4, is_active: true, image_url: '/src/assets/products/trench_coat_1.png' },
-  { id: 'cat-5', name_vi: 'Phụ kiện', name_en: 'Accessories', slug: 'accessories', display_order: 5, is_active: true, image_url: '/src/assets/products/linen_shirt_1.png' },
-  { id: 'cat-6', name_vi: 'Giày dép', name_en: 'Footwear', slug: 'footwear', display_order: 6, is_active: true, image_url: '/src/assets/products/linen_shirt_1.png' },
+  { id: 'cat-1', name_vi: 'Áo', name_en: 'Tops', slug: 'tops', display_order: 1, is_active: true, image_url: '/assets/products/linen_shirt_1.png' },
+  { id: 'cat-2', name_vi: 'Quần', name_en: 'Bottoms', slug: 'bottoms', display_order: 2, is_active: true, image_url: '/assets/products/wide_pants_1.png' },
+  { id: 'cat-3', name_vi: 'Váy & Đầm', name_en: 'Dresses', slug: 'dresses', display_order: 3, is_active: true, image_url: '/assets/products/silk_dress_1.png' },
+  { id: 'cat-4', name_vi: 'Áo khoác', name_en: 'Outerwear', slug: 'outerwear', display_order: 4, is_active: true, image_url: '/assets/products/trench_coat_1.png' },
+  { id: 'cat-5', name_vi: 'Phụ kiện', name_en: 'Accessories', slug: 'accessories', display_order: 5, is_active: true, image_url: '/assets/products/linen_shirt_1.png' },
+  { id: 'cat-6', name_vi: 'Giày dép', name_en: 'Footwear', slug: 'footwear', display_order: 6, is_active: true, image_url: '/assets/products/linen_shirt_1.png' },
 ];
 
 export interface HomepageSettings {
@@ -132,7 +132,7 @@ export const DEFAULT_SETTINGS: HomepageSettings = {
   hero_title_en: 'Aesthetic \n Narrative',
   hero_subtitle_vi: 'Những phom dáng vượt thời gian được thiết kế từ chất liệu tự nhiên cao cấp và đường nét kiến trúc tinh tế cho tủ đồ hiện đại.',
   hero_subtitle_en: 'Timeless silhouettes designed with exceptional organic materials and architectural lines for the modern wardrobe.',
-  hero_image_url: '/src/assets/hero/hero_fashion_1.png',
+  hero_image_url: '/assets/hero/hero_fashion_1.png',
   campaign_quote_vi: 'Từng sản phẩm đều trải qua các quy trình kiểm thử độ rũ của phom dáng và tinh chỉnh đường viền nhằm đảm bảo sự thoải mái và định hình phong cách ổn định suốt nhiều năm.',
   campaign_quote_en: 'Every garment goes through strict shape testing and finishing details to guarantee comfort and style stability for years to come.'
 };
@@ -161,8 +161,8 @@ export const DEFAULT_PRODUCTS: Product[] = [
     care_instructions_vi: 'Giặt tay nhẹ nhàng bằng nước lạnh. Không vắt mạnh. Ủi hơi nước ở nhiệt độ vừa.',
     care_instructions_en: 'Gently hand wash in cold water. Do not wring. Steam iron at medium temperature.',
     images: [
-      { id: 'img-1-1', product_id: 'prod-1', url: '/src/assets/products/linen_shirt_1.png', alt_vi: 'Áo sơ mi linen trắng', alt_en: 'White linen shirt', display_order: 1, is_primary: true },
-      { id: 'img-1-2', product_id: 'prod-1', url: '/src/assets/products/linen_shirt_2.png', alt_vi: 'Chi tiết áo sơ mi linen', alt_en: 'Linen shirt detail', display_order: 2, is_primary: false }
+      { id: 'img-1-1', product_id: 'prod-1', url: '/assets/products/linen_shirt_1.png', alt_vi: 'Áo sơ mi linen trắng', alt_en: 'White linen shirt', display_order: 1, is_primary: true },
+      { id: 'img-1-2', product_id: 'prod-1', url: '/assets/products/linen_shirt_2.png', alt_vi: 'Chi tiết áo sơ mi linen', alt_en: 'Linen shirt detail', display_order: 2, is_primary: false }
     ],
     variants: [
       { id: 'var-1-1', product_id: 'prod-1', size: 'S', color_name_vi: 'Trắng tinh khôi', color_name_en: 'Pure White', color_hex: '#ffffff', stock_quantity: 15, price_adjustment: 0, sku: 'TS-LN-01-W-S' },
@@ -194,8 +194,8 @@ export const DEFAULT_PRODUCTS: Product[] = [
     care_instructions_vi: 'Giặt hấp khô hoặc giặt tay bằng sữa tắm nhẹ. Phơi trong bóng râm.',
     care_instructions_en: 'Dry clean or hand wash using mild soap. Hang to dry in shade.',
     images: [
-      { id: 'img-2-1', product_id: 'prod-2', url: '/src/assets/products/silk_dress_1.png', alt_vi: 'Đầm lụa vàng cát', alt_en: 'Champagne silk dress', display_order: 1, is_primary: true },
-      { id: 'img-2-2', product_id: 'prod-2', url: '/src/assets/products/silk_dress_2.png', alt_vi: 'Đầm lụa đen huyền bí', alt_en: 'Midnight black silk dress', display_order: 2, is_primary: false }
+      { id: 'img-2-1', product_id: 'prod-2', url: '/assets/products/silk_dress_1.png', alt_vi: 'Đầm lụa vàng cát', alt_en: 'Champagne silk dress', display_order: 1, is_primary: true },
+      { id: 'img-2-2', product_id: 'prod-2', url: '/assets/products/silk_dress_2.png', alt_vi: 'Đầm lụa đen huyền bí', alt_en: 'Midnight black silk dress', display_order: 2, is_primary: false }
     ],
     variants: [
       { id: 'var-2-1', product_id: 'prod-2', size: 'S', color_name_vi: 'Vàng cát', color_name_en: 'Champagne Gold', color_hex: '#e8d8c8', stock_quantity: 5, price_adjustment: 0, sku: 'DR-SK-02-C-S' },
@@ -225,7 +225,7 @@ export const DEFAULT_PRODUCTS: Product[] = [
     care_instructions_vi: 'Giặt khô chuyên nghiệp. Tránh giặt máy làm mất phom áo.',
     care_instructions_en: 'Professional dry clean only. Avoid machine washing to preserve structure.',
     images: [
-      { id: 'img-3-1', product_id: 'prod-3', url: '/src/assets/products/trench_coat_1.png', alt_vi: 'Áo khoác trench coat màu kaki', alt_en: 'Khaki trench coat', display_order: 1, is_primary: true }
+      { id: 'img-3-1', product_id: 'prod-3', url: '/assets/products/trench_coat_1.png', alt_vi: 'Áo khoác trench coat màu kaki', alt_en: 'Khaki trench coat', display_order: 1, is_primary: true }
     ],
     variants: [
       { id: 'var-3-1', product_id: 'prod-3', size: 'S', color_name_vi: 'Vàng Kaki', color_name_en: 'Classic Khaki', color_hex: '#c3b091', stock_quantity: 3, price_adjustment: 0, sku: 'OW-TC-03-K-S' },
@@ -255,7 +255,7 @@ export const DEFAULT_PRODUCTS: Product[] = [
     care_instructions_vi: 'Giặt máy ở chế độ nhẹ nhàng. Ủi nhẹ ở nhiệt độ thấp.',
     care_instructions_en: 'Machine wash in gentle cycle. Cool iron if needed.',
     images: [
-      { id: 'img-4-1', product_id: 'prod-4', url: '/src/assets/products/wide_pants_1.png', alt_vi: 'Quần tây xếp ly đen', alt_en: 'Black pleated trousers', display_order: 1, is_primary: true }
+      { id: 'img-4-1', product_id: 'prod-4', url: '/assets/products/wide_pants_1.png', alt_vi: 'Quần tây xếp ly đen', alt_en: 'Black pleated trousers', display_order: 1, is_primary: true }
     ],
     variants: [
       { id: 'var-4-1', product_id: 'prod-4', size: 'S', color_name_vi: 'Đen tuyền', color_name_en: 'Midnight Black', color_hex: '#111111', stock_quantity: 1, price_adjustment: 0, sku: 'BT-TR-04-B-S' },
@@ -283,7 +283,7 @@ export const DEFAULT_PRODUCTS: Product[] = [
     care_instructions_vi: 'Giặt máy bình thường với các đồ cùng màu. Sấy ở nhiệt độ thấp.',
     care_instructions_en: 'Machine wash warm with like colors. Tumble dry low.',
     images: [
-      { id: 'img-5-1', product_id: 'prod-5', url: '/src/assets/products/cotton_tee_1.png', alt_vi: 'Áo thun cotton sữa', alt_en: 'Milk cotton tee', display_order: 1, is_primary: true }
+      { id: 'img-5-1', product_id: 'prod-5', url: '/assets/products/cotton_tee_1.png', alt_vi: 'Áo thun cotton sữa', alt_en: 'Milk cotton tee', display_order: 1, is_primary: true }
     ],
     variants: [
       { id: 'var-5-1', product_id: 'prod-5', size: 'S', color_name_vi: 'Kem Sữa', color_name_en: 'Cream', color_hex: '#f5f5dc', stock_quantity: 30, price_adjustment: 0, sku: 'TS-CT-05-CR-S' },
@@ -313,7 +313,7 @@ export const DEFAULT_PRODUCTS: Product[] = [
     care_instructions_vi: 'Tránh đi mưa. Lau bằng khăn cotton mềm khô. Đánh xi dưỡng da định kỳ.',
     care_instructions_en: 'Avoid wearing in rain. Wipe with a dry soft cotton cloth. Apply leather balm regularly.',
     images: [
-      { id: 'img-6-1', product_id: 'prod-6', url: '/src/assets/products/ballet_flats_1.png', alt_vi: 'Giày búp bê da đen', alt_en: 'Black leather ballet flats', display_order: 1, is_primary: true }
+      { id: 'img-6-1', product_id: 'prod-6', url: '/assets/products/ballet_flats_1.png', alt_vi: 'Giày búp bê da đen', alt_en: 'Black leather ballet flats', display_order: 1, is_primary: true }
     ],
     variants: [
       { id: 'var-6-1', product_id: 'prod-6', size: '36', color_name_vi: 'Đen bóng', color_name_en: 'Nero Black', color_hex: '#151515', stock_quantity: 5, price_adjustment: 0, sku: 'FW-BF-06-B-36' },
@@ -394,7 +394,7 @@ export const DEFAULT_ORDERS: Order[] = [
         quantity: 2,
         unit_price: 1250000,
         total_price: 2500000,
-        image_url: '/src/assets/products/silk_dress_1.png'
+        image_url: '/assets/products/silk_dress_1.png'
       }
     ],
     notes: 'Giao hàng giờ hành chính giúp em.'
@@ -430,7 +430,7 @@ export const DEFAULT_ORDERS: Order[] = [
         quantity: 2,
         unit_price: 650000,
         total_price: 1300000,
-        image_url: '/src/assets/products/linen_shirt_1.png'
+        image_url: '/assets/products/linen_shirt_1.png'
       }
     ]
   }

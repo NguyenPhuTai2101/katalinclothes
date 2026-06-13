@@ -190,7 +190,7 @@ export const Products: React.FC = () => {
       care_instructions_vi: formFields.care_instructions_vi,
       care_instructions_en: formFields.care_instructions_en,
       images: editingProduct ? editingProduct.images : [
-        { id: 'img-gen-' + Math.random().toString(36).substr(2, 5), product_id: '', url: '/src/assets/products/linen_shirt_1.png', display_order: 1, is_primary: true }
+        { id: 'img-gen-' + Math.random().toString(36).substr(2, 5), product_id: '', url: '/assets/products/linen_shirt_1.png', display_order: 1, is_primary: true }
       ],
       variants: variantsList.map(v => ({
         ...v,

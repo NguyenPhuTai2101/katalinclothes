@@ -272,7 +272,7 @@ export const Collections: React.FC = () => {
                     <div className="relative aspect-[3/4] bg-surface overflow-hidden rounded border border-primary/5">
                       <Link to={`/products/${prod.slug}`} className="block h-full w-full">
                         <img
-                          src={prod.images[0]?.url || '/src/assets/products/linen_shirt_1.png'}
+                          src={prod.images[0]?.url || '/assets/products/linen_shirt_1.png'}
                           alt={language === 'vi' ? prod.images[0]?.alt_vi || prod.name_vi : prod.images[0]?.alt_en || prod.name_en}
                           className="h-full w-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
                         />
