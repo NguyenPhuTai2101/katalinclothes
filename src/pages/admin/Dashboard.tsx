@@ -184,7 +184,7 @@ export const Dashboard: React.FC = () => {
               <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="var(--outline-custom)" />
               <XAxis dataKey="name" stroke="#888" fontSize={11} tickLine={false} />
               <YAxis stroke="#888" fontSize={11} tickLine={false} axisLine={false} tickFormatter={(v) => `${(v/1000000).toFixed(1)}M`} />
-              <Tooltip formatter={(value: any) => formatPriceVND(value)} labelClassName="text-xs font-semibold text-primary" contentStyle={{ fontSize: 11, backgroundColor: 'var(--card)', borderColor: 'var(--outline-custom)' }} />
+              <Tooltip formatter={(value: any) => formatPriceVND(value)} labelClassName="text-xs font-semibold text-primary" contentStyle={{ fontSize: 11, backgroundColor: 'var(--card)', borderColor: 'var(--outline-custom)' }} itemStyle={{ color: 'var(--primary)' }} />
               <Line type="monotone" dataKey="revenue" stroke="var(--accent)" strokeWidth={2} activeDot={{ r: 6 }} />
             </LineChart>
           </ResponsiveContainer>

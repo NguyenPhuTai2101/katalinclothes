@@ -106,7 +106,7 @@ export const Reports: React.FC = () => {
                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="var(--outline-custom)" />
                 <XAxis dataKey="name" fontSize={11} stroke="#888" tickLine={false} />
                 <YAxis fontSize={11} stroke="#888" tickLine={false} axisLine={false} tickFormatter={(v) => `${(v/1000000).toFixed(0)}M`} />
-                <Tooltip formatter={(value: any) => formatPriceVND(value)} contentStyle={{ fontSize: 11, backgroundColor: 'var(--card)', borderColor: 'var(--outline-custom)' }} />
+                <Tooltip formatter={(value: any) => formatPriceVND(value)} labelClassName="text-xs font-semibold text-primary" contentStyle={{ fontSize: 11, backgroundColor: 'var(--card)', borderColor: 'var(--outline-custom)' }} itemStyle={{ color: 'var(--primary)' }} />
                 <Bar dataKey="sales" fill="var(--accent)" radius={[4, 4, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
@@ -136,7 +136,7 @@ export const Reports: React.FC = () => {
                       <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                     ))}
                   </Pie>
-                  <Tooltip formatter={(value: any) => formatPriceVND(value)} contentStyle={{ fontSize: 11, backgroundColor: 'var(--card)', borderColor: 'var(--outline-custom)' }} />
+                  <Tooltip formatter={(value: any) => formatPriceVND(value)} labelClassName="text-xs font-semibold text-primary" contentStyle={{ fontSize: 11, backgroundColor: 'var(--card)', borderColor: 'var(--outline-custom)' }} itemStyle={{ color: 'var(--primary)' }} />
                   <Legend verticalAlign="bottom" height={36} iconSize={10} iconType="circle" wrapperStyle={{ fontSize: 11, color: 'var(--primary)' }} />
                 </PieChart>
               </ResponsiveContainer>
