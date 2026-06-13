@@ -1,0 +1,17 @@
+{
+  "name": "Katalin Clothes Store",
+  "short_name": "Katalin",
+  "description": "Minimalist clothing brand inspired by timeless aesthetic shapes, clean lines, and premium materials.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#1a1a1a",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "48x48 96x96 128x128 192x192 256x256 512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

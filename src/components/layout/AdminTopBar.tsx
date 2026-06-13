@@ -4,10 +4,14 @@ import { db } from '../../db/dbClient';
 import type { Product } from '../../db/mockDb';
 import { useLanguage } from '../../context/LanguageContext';
 import { useTheme } from '../../context/ThemeContext';
-import { Bell, Search, LogOut, ChevronDown, Check, Sun, Moon } from 'lucide-react';
+import { Bell, Search, LogOut, ChevronDown, Check, Sun, Moon, Menu } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
-export const AdminTopBar: React.FC = () => {
+interface AdminTopBarProps {
+  onMenuClick: () => void;
+}
+
+export const AdminTopBar: React.FC<AdminTopBarProps> = ({ onMenuClick }) => {
   const { user, loginAsCustomer, logout } = useAuth();
   const { theme, toggleTheme } = useTheme();
   const { language, setLanguage, t } = useLanguage();
@@ -30,9 +34,18 @@ export const AdminTopBar: React.FC = () => {
   }, []);
 
   return (
-    <header className="h-20 bg-card border-b border-primary/5 px-8 flex items-center justify-between sticky top-0 z-20">
+    <header className="h-20 bg-card border-b border-primary/5 px-4 sm:px-8 flex items-center justify-between sticky top-0 z-20">
+      {/* Mobile Menu Toggle */}
+      <button
+        onClick={onMenuClick}
+        className="p-2 -ml-2 text-secondary hover:text-primary lg:hidden focus:outline-none cursor-pointer"
+        aria-label="Open sidebar"
+      >
+        <Menu className="w-6 h-6" />
+      </button>
+
       {/* Search Bar */}
-      <div className="w-96 relative">
+      <div className="flex-grow max-w-xs sm:w-96 relative ml-2 lg:ml-0">
         <input
           type="text"
           placeholder={t('Tìm kiếm nhanh sản phẩm, đơn hàng...', 'Quick search products, orders, customers...')}

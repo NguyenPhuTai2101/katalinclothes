@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Outlet, Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { SideNavBar } from './SideNavBar';
@@ -9,6 +9,7 @@ import { useLanguage } from '../../context/LanguageContext';
 export const AdminLayout: React.FC = () => {
   const { role, loginAsAdmin } = useAuth();
   const { t } = useLanguage();
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   // Scroll to top on load
   useEffect(() => {
@@ -52,15 +53,15 @@ export const AdminLayout: React.FC = () => {
   return (
     <div className="min-h-screen bg-surface flex">
       {/* Sidebar Navigation */}
-      <SideNavBar />
+      <SideNavBar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
       {/* Main Content Area */}
-      <div className="flex-1 pl-64 flex flex-col min-h-screen">
+      <div className="flex-1 pl-0 lg:pl-64 flex flex-col min-h-screen transition-all duration-300">
         {/* Top Header Bar */}
-        <AdminTopBar />
+        <AdminTopBar onMenuClick={() => setSidebarOpen(true)} />
 
         {/* Dynamic Route Content */}
-        <main className="flex-grow p-8 bg-surface">
+        <main className="flex-grow p-4 sm:p-8 bg-surface">
           <div className="max-w-7xl mx-auto">
             <Outlet />
           </div>

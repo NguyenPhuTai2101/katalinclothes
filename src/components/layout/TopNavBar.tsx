@@ -5,7 +5,7 @@ import { useWishlist } from '../../context/WishlistContext';
 import { useAuth } from '../../context/AuthContext';
 import { useLanguage } from '../../context/LanguageContext';
 import { useTheme } from '../../context/ThemeContext';
-import { ShoppingBag, Heart, User, Search, Menu, X, Eye, Sun, Moon } from 'lucide-react';
+import { ShoppingBag, Heart, User, Search, Menu, X, Eye, Sun, Moon, Download } from 'lucide-react';
 
 interface TopNavBarProps {
   onOpenLogin: () => void;
@@ -20,6 +20,29 @@ export const TopNavBar: React.FC<TopNavBarProps> = ({ onOpenLogin }) => {
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
+  const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
+  const [showInstallBtn, setShowInstallBtn] = useState(false);
+
+  React.useEffect(() => {
+    const handler = (e: Event) => {
+      e.preventDefault();
+      setDeferredPrompt(e);
+      setShowInstallBtn(true);
+    };
+    window.addEventListener('beforeinstallprompt', handler);
+    return () => window.removeEventListener('beforeinstallprompt', handler);
+  }, []);
+
+  const handleInstallClick = async () => {
+    if (!deferredPrompt) return;
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    if (outcome === 'accepted') {
+      console.log('User accepted the PWA install prompt');
+    }
+    setDeferredPrompt(null);
+    setShowInstallBtn(false);
+  };
 
   const { language, setLanguage, t } = useLanguage();
   const { theme, toggleTheme } = useTheme();
@@ -94,6 +117,18 @@ export const TopNavBar: React.FC<TopNavBarProps> = ({ onOpenLogin }) => {
               >
                 <Search className="w-4.5 h-4.5" />
               </button>
+
+              {/* PWA Install Button */}
+              {showInstallBtn && (
+                <button
+                  onClick={handleInstallClick}
+                  className="p-2 hover:opacity-75 focus:outline-none text-primary cursor-pointer flex items-center gap-1.5"
+                  title={t('Tải ứng dụng', 'Install App')}
+                >
+                  <Download className="w-4 h-4" />
+                  <span className="text-[9px] font-bold tracking-widest uppercase hidden lg:inline">{t('Tải App', 'Install')}</span>
+                </button>
+              )}
 
               {/* Theme Toggle */}
               <button
@@ -332,6 +367,21 @@ export const TopNavBar: React.FC<TopNavBarProps> = ({ onOpenLogin }) => {
                 </Link>
               )}
             </nav>
+
+            {showInstallBtn && (
+              <div className="px-2 mb-4">
+                <button
+                  onClick={() => {
+                    setMobileMenuOpen(false);
+                    handleInstallClick();
+                  }}
+                  className="w-full flex items-center justify-center gap-2 bg-primary text-white text-[11px] tracking-widest font-semibold uppercase py-3 rounded shadow transition cursor-pointer"
+                >
+                  <Download className="w-4 h-4" />
+                  {t('Tải Ứng Dụng Web', 'Install Web App')}
+                </button>
+              </div>
+            )}
 
             <div className="mt-auto border-t border-outline-custom pt-6 space-y-4">
               {/* Mobile Lang and Theme controls */}
