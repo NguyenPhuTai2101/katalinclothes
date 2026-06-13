@@ -75,3 +75,24 @@ ALTER TABLE public.profiles
   ADD COLUMN IF NOT EXISTS ward_code TEXT,
   ADD COLUMN IF NOT EXISTS street_address TEXT;
 
+-- ------------------------------------------------------------
+-- PHẦN 4: Bổ sung Bảng Cấu Hình Trang Chủ (Settings Table)
+-- ------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS public.settings (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  hero_title_vi TEXT NOT NULL,
+  hero_title_en TEXT NOT NULL,
+  hero_subtitle_vi TEXT NOT NULL,
+  hero_subtitle_en TEXT NOT NULL,
+  hero_image_url TEXT NOT NULL,
+  campaign_quote_vi TEXT NOT NULL,
+  campaign_quote_en TEXT NOT NULL,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+ALTER TABLE public.settings ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "Anyone can manage settings dev" ON public.settings;
+CREATE POLICY "Anyone can manage settings dev" ON public.settings 
+  FOR ALL USING (true) WITH CHECK (true);
+
+

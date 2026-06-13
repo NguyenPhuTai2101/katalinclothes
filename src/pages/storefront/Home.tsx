@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { db } from '../../db/dbClient';
-import type { Product, Category } from '../../db/mockDb';
+import { DEFAULT_SETTINGS } from '../../db/mockDb';
+import type { Product, Category, HomepageSettings } from '../../db/mockDb';
 import { useCart } from '../../context/CartContext';
 import { useWishlist } from '../../context/WishlistContext';
 import { useLanguage } from '../../context/LanguageContext';
@@ -11,6 +12,7 @@ import { Heart, ShoppingBag, ArrowRight, ShieldCheck, HelpCircle } from 'lucide-
 export const Home: React.FC = () => {
   const [featuredProducts, setFeaturedProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
+  const [settings, setSettings] = useState<HomepageSettings>(DEFAULT_SETTINGS);
   const { addToCart } = useCart();
   const { toggleWishlist, isInWishlist } = useWishlist();
   const { language, t } = useLanguage();
@@ -21,6 +23,10 @@ export const Home: React.FC = () => {
       setFeaturedProducts(prods.filter(p => p.is_featured && p.is_active));
       const cats = await db.getCategories();
       setCategories(cats.filter(c => c.is_active).slice(0, 4));
+      const sett = await db.getSettings();
+      if (sett) {
+        setSettings(sett);
+      }
     };
     loadHomeData();
   }, []);
@@ -30,22 +36,30 @@ export const Home: React.FC = () => {
       {/* Editorial Hero Banner */}
       <section className="relative h-screen w-full bg-[#1a1a1a] flex items-center overflow-hidden">
         {/* Background Image */}
-        <div className="absolute inset-0 opacity-65 bg-cover bg-center transition-transform duration-10000 hover:scale-105" style={{ backgroundImage: "url('/src/assets/hero/hero_fashion_1.png')" }}></div>
+        <div className="absolute inset-0 opacity-65 bg-cover bg-center transition-transform duration-10000 hover:scale-105" style={{ backgroundImage: `url('${settings.hero_image_url}')` }}></div>
         <div className="absolute inset-0 bg-gradient-to-t from-[#1a1a1a]/60 via-transparent to-[#1a1a1a]/45"></div>
-
+ 
         {/* Content */}
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-white w-full text-center md:text-left z-10 pt-16">
           <div className="max-w-2xl space-y-6 md:space-y-8 animate-fadeIn">
             <span className="text-xs uppercase tracking-[0.3em] font-semibold text-accent">{t('Chiến dịch Katalin-Clothes', 'Katalin-Clothes Campaign')}</span>
             <h1 className="text-4xl sm:text-6xl lg:text-7xl font-serif font-light leading-none tracking-tight">
-              {t('Ý niệm', 'Aesthetic')} <br />
-              <span className="font-normal italic">{t('Thẩm mỹ', 'Narrative')}</span>
+              {(() => {
+                const title = language === 'vi' ? settings.hero_title_vi : settings.hero_title_en;
+                const parts = title.split('\n');
+                if (parts.length > 1) {
+                  return (
+                    <>
+                      {parts[0]} <br />
+                      <span className="font-normal italic">{parts.slice(1).join(' ')}</span>
+                    </>
+                  );
+                }
+                return title;
+              })()}
             </h1>
             <p className="text-white/80 text-xs sm:text-sm max-w-md leading-relaxed tracking-wider font-light mx-auto md:mx-0">
-              {t(
-                'Những phom dáng vượt thời gian được thiết kế từ chất liệu tự nhiên cao cấp và đường nét kiến trúc tinh tế cho tủ đồ hiện đại.',
-                'Timeless silhouettes designed with exceptional organic materials and architectural lines for the modern wardrobe.'
-              )}
+              {language === 'vi' ? settings.hero_subtitle_vi : settings.hero_subtitle_en}
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center md:justify-start gap-4 pt-4">
               <Link
@@ -103,10 +117,12 @@ export const Home: React.FC = () => {
 
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
           {categories.map((cat) => {
-            let imgUrl = '/src/assets/products/linen_shirt_1.png';
-            if (cat.slug === 'bottoms') imgUrl = '/src/assets/products/wide_pants_1.png';
-            if (cat.slug === 'dresses') imgUrl = '/src/assets/products/silk_dress_1.png';
-            if (cat.slug === 'outerwear') imgUrl = '/src/assets/products/trench_coat_1.png';
+            let imgUrl = cat.image_url || '/src/assets/products/linen_shirt_1.png';
+            if (!cat.image_url) {
+              if (cat.slug === 'bottoms') imgUrl = '/src/assets/products/wide_pants_1.png';
+              if (cat.slug === 'dresses') imgUrl = '/src/assets/products/silk_dress_1.png';
+              if (cat.slug === 'outerwear') imgUrl = '/src/assets/products/trench_coat_1.png';
+            }
 
             return (
               <Link
@@ -229,10 +245,7 @@ export const Home: React.FC = () => {
             {t('May đo cho sự Bền bỉ', 'Crafted for')} <span className="italic">{t('Trường tồn', 'Longevity')}</span>
           </h3>
           <p className="text-white/60 text-xs sm:text-sm max-w-md mx-auto leading-relaxed font-light">
-            {t(
-              'Từng sản phẩm đều trải qua các quy trình kiểm thử độ rũ của phom dáng và tinh chỉnh đường viền nhằm đảm bảo sự thoải mái và định hình phong cách ổn định suốt nhiều năm.',
-              'Every garment goes through strict shape testing and finishing details to guarantee comfort and style stability for years to come.'
-            )}
+            {language === 'vi' ? settings.campaign_quote_vi : settings.campaign_quote_en}
           </p>
           <div className="pt-4">
             <Link

@@ -26,6 +26,7 @@ import { Orders } from './pages/admin/Orders';
 import { Customers } from './pages/admin/Customers';
 import { Warehouse } from './pages/admin/Warehouse';
 import { Reports } from './pages/admin/Reports';
+import { Settings } from './pages/admin/Settings';
 
 // Floating Role Switcher Widget for easy testing
 const FloatingRoleSwitcher: React.FC = () => {
@@ -92,6 +93,7 @@ function App() {
                     <Route path="customers" element={<Customers />} />
                     <Route path="warehouse" element={<Warehouse />} />
                     <Route path="reports" element={<Reports />} />
+                    <Route path="settings" element={<Settings />} />
                   </Route>
 
                   {/* Fallback 404 redirect */}

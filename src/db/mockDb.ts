@@ -109,13 +109,34 @@ export interface Customer {
 
 // Initial default categories
 export const DEFAULT_CATEGORIES: Category[] = [
-  { id: 'cat-1', name_vi: 'Áo', name_en: 'Tops', slug: 'tops', display_order: 1, is_active: true },
-  { id: 'cat-2', name_vi: 'Quần', name_en: 'Bottoms', slug: 'bottoms', display_order: 2, is_active: true },
-  { id: 'cat-3', name_vi: 'Váy & Đầm', name_en: 'Dresses', slug: 'dresses', display_order: 3, is_active: true },
-  { id: 'cat-4', name_vi: 'Áo khoác', name_en: 'Outerwear', slug: 'outerwear', display_order: 4, is_active: true },
-  { id: 'cat-5', name_vi: 'Phụ kiện', name_en: 'Accessories', slug: 'accessories', display_order: 5, is_active: true },
-  { id: 'cat-6', name_vi: 'Giày dép', name_en: 'Footwear', slug: 'footwear', display_order: 6, is_active: true },
+  { id: 'cat-1', name_vi: 'Áo', name_en: 'Tops', slug: 'tops', display_order: 1, is_active: true, image_url: '/src/assets/products/linen_shirt_1.png' },
+  { id: 'cat-2', name_vi: 'Quần', name_en: 'Bottoms', slug: 'bottoms', display_order: 2, is_active: true, image_url: '/src/assets/products/wide_pants_1.png' },
+  { id: 'cat-3', name_vi: 'Váy & Đầm', name_en: 'Dresses', slug: 'dresses', display_order: 3, is_active: true, image_url: '/src/assets/products/silk_dress_1.png' },
+  { id: 'cat-4', name_vi: 'Áo khoác', name_en: 'Outerwear', slug: 'outerwear', display_order: 4, is_active: true, image_url: '/src/assets/products/trench_coat_1.png' },
+  { id: 'cat-5', name_vi: 'Phụ kiện', name_en: 'Accessories', slug: 'accessories', display_order: 5, is_active: true, image_url: '/src/assets/products/linen_shirt_1.png' },
+  { id: 'cat-6', name_vi: 'Giày dép', name_en: 'Footwear', slug: 'footwear', display_order: 6, is_active: true, image_url: '/src/assets/products/linen_shirt_1.png' },
 ];
+
+export interface HomepageSettings {
+  hero_title_vi: string;
+  hero_title_en: string;
+  hero_subtitle_vi: string;
+  hero_subtitle_en: string;
+  hero_image_url: string;
+  campaign_quote_vi: string;
+  campaign_quote_en: string;
+}
+
+export const DEFAULT_SETTINGS: HomepageSettings = {
+  hero_title_vi: 'Ý niệm \n Thẩm mỹ',
+  hero_title_en: 'Aesthetic \n Narrative',
+  hero_subtitle_vi: 'Những phom dáng vượt thời gian được thiết kế từ chất liệu tự nhiên cao cấp và đường nét kiến trúc tinh tế cho tủ đồ hiện đại.',
+  hero_subtitle_en: 'Timeless silhouettes designed with exceptional organic materials and architectural lines for the modern wardrobe.',
+  hero_image_url: '/src/assets/hero/hero_fashion_1.png',
+  campaign_quote_vi: 'Từng sản phẩm đều trải qua các quy trình kiểm thử độ rũ của phom dáng và tinh chỉnh đường viền nhằm đảm bảo sự thoải mái và định hình phong cách ổn định suốt nhiều năm.',
+  campaign_quote_en: 'Every garment goes through strict shape testing and finishing details to guarantee comfort and style stability for years to come.'
+};
+
 
 // Initial default products
 export const DEFAULT_PRODUCTS: Product[] = [
@@ -435,11 +456,34 @@ export const mockDb = {
     getStorageItem('ktl_products', DEFAULT_PRODUCTS);
     getStorageItem('ktl_customers', DEFAULT_CUSTOMERS);
     getStorageItem('ktl_orders', DEFAULT_ORDERS);
+    getStorageItem('ktl_settings', DEFAULT_SETTINGS);
   },
 
   // Categories CRUD
   getCategories: (): Category[] => {
     return getStorageItem('ktl_categories', DEFAULT_CATEGORIES);
+  },
+
+  updateCategory: (category: Category): Category => {
+    const categories = getStorageItem('ktl_categories', DEFAULT_CATEGORIES);
+    const index = categories.findIndex(c => c.id === category.id);
+    if (index >= 0) {
+      categories[index] = { ...category };
+    } else {
+      categories.push(category);
+    }
+    setStorageItem('ktl_categories', categories);
+    return category;
+  },
+
+  // Settings CRUD
+  getSettings: (): HomepageSettings => {
+    return getStorageItem('ktl_settings', DEFAULT_SETTINGS);
+  },
+
+  updateSettings: (settings: HomepageSettings): HomepageSettings => {
+    setStorageItem('ktl_settings', settings);
+    return settings;
   },
 
   // Products CRUD

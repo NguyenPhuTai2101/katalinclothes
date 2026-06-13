@@ -1,6 +1,6 @@
 import { createClient } from '@supabase/supabase-js';
 import { mockDb, DEFAULT_PRODUCTS, DEFAULT_ORDERS } from './mockDb';
-import type { Product, Category, Customer, Order } from './mockDb';
+import type { Product, Category, Customer, Order, HomepageSettings } from './mockDb';
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || '';
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
@@ -492,6 +492,108 @@ export const db = {
     } catch (e) {
       console.warn('Error in getCategories, falling back to mockDb:', e);
       return mockDb.getCategories();
+    }
+  },
+
+  updateCategory: async (category: Category): Promise<Category> => {
+    try {
+      const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(category.id) ||
+                     /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(category.id);
+      
+      const payload = {
+        name_vi: category.name_vi,
+        name_en: category.name_en,
+        slug: category.slug,
+        description_vi: category.description_vi || null,
+        description_en: category.description_en || null,
+        image_url: category.image_url || null,
+        display_order: category.display_order,
+        is_active: category.is_active
+      };
+
+      if (isUuid) {
+        const { error } = await supabase
+          .from('categories')
+          .update(payload)
+          .eq('id', category.id);
+        
+        if (error) throw error;
+      } else {
+        return mockDb.updateCategory(category);
+      }
+
+      return category;
+    } catch (e: any) {
+      console.warn('Supabase updateCategory failed, falling back to mockDb:', e.message || e);
+      return mockDb.updateCategory(category);
+    }
+  },
+
+  // Settings
+  getSettings: async (): Promise<HomepageSettings> => {
+    try {
+      const { data, error } = await supabase
+        .from('settings')
+        .select('*')
+        .order('created_at', { ascending: false })
+        .limit(1)
+        .maybeSingle();
+
+      if (error || !data) {
+        if (error) console.warn('Supabase getSettings failed, falling back to mockDb:', error.message);
+        return mockDb.getSettings();
+      }
+
+      return data as HomepageSettings;
+    } catch (e) {
+      console.warn('Error in getSettings, falling back to mockDb:', e);
+      return mockDb.getSettings();
+    }
+  },
+
+  updateSettings: async (settings: HomepageSettings): Promise<HomepageSettings> => {
+    try {
+      const { data: existing, error: fetchError } = await supabase
+        .from('settings')
+        .select('id')
+        .order('created_at', { ascending: false })
+        .limit(1)
+        .maybeSingle();
+
+      if (fetchError) throw fetchError;
+
+      const payload = {
+        hero_title_vi: settings.hero_title_vi,
+        hero_title_en: settings.hero_title_en,
+        hero_subtitle_vi: settings.hero_subtitle_vi,
+        hero_subtitle_en: settings.hero_subtitle_en,
+        hero_image_url: settings.hero_image_url,
+        campaign_quote_vi: settings.campaign_quote_vi,
+        campaign_quote_en: settings.campaign_quote_en
+      };
+
+      if (existing) {
+        const { error: updateError } = await supabase
+          .from('settings')
+          .update(payload)
+          .eq('id', existing.id);
+
+        if (updateError) throw updateError;
+      } else {
+        const { error: insertError } = await supabase
+          .from('settings')
+          .insert(payload);
+
+        if (insertError) throw insertError;
+      }
+
+      // Sync local storage
+      mockDb.updateSettings(settings);
+
+      return settings;
+    } catch (e: any) {
+      console.warn('Supabase updateSettings failed, falling back to mockDb:', e.message || e);
+      return mockDb.updateSettings(settings);
     }
   },
 

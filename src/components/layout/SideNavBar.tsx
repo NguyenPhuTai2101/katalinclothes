@@ -9,7 +9,8 @@ import {
   Warehouse, 
   BarChart3, 
   ArrowLeft,
-  X
+  X,
+  Sliders
 } from 'lucide-react';
 
 interface SideNavBarProps {
@@ -27,6 +28,7 @@ export const SideNavBar: React.FC<SideNavBarProps> = ({ isOpen = false, onClose 
     { name: t('Khách hàng', 'Customers'), path: '/admin/customers', icon: Users },
     { name: t('Kho hàng', 'Warehouse'), path: '/admin/warehouse', icon: Warehouse },
     { name: t('Báo cáo', 'Reports'), path: '/admin/reports', icon: BarChart3 },
+    { name: t('Cấu hình', 'Settings'), path: '/admin/settings', icon: Sliders },
   ];
 
   return (
