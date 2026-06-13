@@ -28,10 +28,10 @@ export const Home: React.FC = () => {
   return (
     <div className="space-y-20 pb-20">
       {/* Editorial Hero Banner */}
-      <section className="relative h-screen w-full bg-primary flex items-center overflow-hidden">
+      <section className="relative h-screen w-full bg-[#1a1a1a] flex items-center overflow-hidden">
         {/* Background Image */}
         <div className="absolute inset-0 opacity-65 bg-cover bg-center transition-transform duration-10000 hover:scale-105" style={{ backgroundImage: "url('/src/assets/hero/hero_fashion_1.png')" }}></div>
-        <div className="absolute inset-0 bg-gradient-to-t from-primary/60 via-transparent to-primary/45"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-[#1a1a1a]/60 via-transparent to-[#1a1a1a]/45"></div>
 
         {/* Content */}
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-white w-full text-center md:text-left z-10 pt-16">
@@ -221,7 +221,7 @@ export const Home: React.FC = () => {
       </section>
 
       {/* Editorial Quote */}
-      <section className="bg-primary text-white py-24 flex items-center justify-center text-center">
+      <section className="bg-[#1a1a1a] dark:bg-[#121212] text-white py-24 flex items-center justify-center text-center">
         <div className="max-w-3xl px-4 sm:px-6 space-y-6">
           <span className="text-xs uppercase tracking-[0.3em] text-accent font-semibold">{t('CHIẾN DỊCH HÈ', 'SUMMER CAMPAIGN')}</span>
           <h3 className="text-3xl sm:text-5xl font-serif font-light leading-snug">

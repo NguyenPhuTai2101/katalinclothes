@@ -24,7 +24,7 @@ export const SideNavBar: React.FC = () => {
   ];
 
   return (
-    <aside className="w-64 bg-primary text-white flex flex-col h-screen fixed left-0 top-0 z-30 border-r border-white/5 shadow-xl">
+    <aside className="w-64 bg-[#1a1a1a] dark:bg-[#121212] text-white flex flex-col h-screen fixed left-0 top-0 z-30 border-r border-white/5 shadow-xl">
       {/* Brand / Logo */}
       <div className="h-20 flex items-center px-6 border-b border-white/5 justify-between">
         <Link to="/admin" className="font-serif text-xl font-bold tracking-widest uppercase">
@@ -43,7 +43,7 @@ export const SideNavBar: React.FC = () => {
             className={({ isActive }) => 
               `flex items-center px-4 py-3 text-xs tracking-wider uppercase font-semibold rounded transition-colors gap-3 ${
                 isActive 
-                  ? 'bg-white text-primary' 
+                  ? 'bg-white text-[#1a1a1a] dark:bg-white/10 dark:text-white' 
                   : 'text-white/60 hover:text-white hover:bg-white/5'
               }`
             }
@@ -58,7 +58,7 @@ export const SideNavBar: React.FC = () => {
       <div className="p-4 border-t border-white/5 space-y-2">
         <Link
           to="/"
-          className="flex items-center justify-center px-4 py-2 text-[10px] tracking-widest uppercase font-semibold border border-white/20 hover:bg-white hover:text-primary transition rounded w-full gap-2"
+          className="flex items-center justify-center px-4 py-2 text-[10px] tracking-widest uppercase font-semibold border border-white/20 hover:bg-white hover:text-[#1a1a1a] transition rounded w-full gap-2"
         >
           <ArrowLeft className="w-3.5 h-3.5" />
           {t('Cửa hàng', 'Storefront')}

@@ -36,16 +36,16 @@ const FloatingRoleSwitcher: React.FC = () => {
   if (location.pathname === '/checkout' && window.location.search.includes('step=3')) return null;
 
   return (
-    <div className="fixed bottom-6 right-6 z-50 bg-primary text-white text-[10px] tracking-widest font-semibold uppercase px-4 py-2.5 rounded-full shadow-2xl border border-white/10 flex items-center gap-3 glass-nav transition-all duration-300">
+    <div className="fixed bottom-6 right-6 z-50 bg-card/70 text-primary text-[10px] tracking-widest font-semibold uppercase px-4 py-2.5 rounded-full shadow-2xl border border-outline-custom flex items-center gap-3 backdrop-blur-md transition-all duration-300">
       <span className="opacity-60 font-mono">Role: {role}</span>
-      <div className="w-px h-3 bg-white/20" />
+      <div className="w-px h-3 bg-outline-custom" />
       {role === 'customer' ? (
         <button
           onClick={() => {
             setRole('admin');
             // Refresh/redirect is handled by layout guards
           }}
-          className="text-accent hover:text-white transition flex items-center gap-1"
+          className="text-accent hover:text-primary transition flex items-center gap-1 cursor-pointer"
         >
           Activate Admin View →
         </button>
@@ -55,7 +55,7 @@ const FloatingRoleSwitcher: React.FC = () => {
           onClick={() => {
             setRole('customer');
           }}
-          className="text-accent hover:text-white transition flex items-center gap-1"
+          className="text-accent hover:text-primary transition flex items-center gap-1"
         >
           Activate Shop View →
         </Link>

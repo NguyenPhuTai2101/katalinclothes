@@ -2,6 +2,8 @@
 
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
   --color-primary: var(--primary);
   --color-primary-light: var(--primary-light);
@@ -102,3 +104,27 @@
   background-color: var(--primary);
   transition: background-color 0.3s ease;
 }
+
+/* Smooth global transitions for background and colors */
+body, header, aside, nav, footer, main, button, input, select, textarea, a, .glass-nav {
+  transition: background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1), 
+              border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1), 
+              color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Custom styling overrides for dark mode elements using primary backgrounds */
+.dark .bg-primary,
+.dark .bg-primary-light,
+.dark .hover\:bg-primary:hover,
+.dark .hover\:bg-primary-light:hover {
+  background-color: var(--primary) !important;
+  color: var(--card) !important;
+}
+
+.dark .bg-primary svg,
+.dark .bg-primary-light svg,
+.dark .hover\:bg-primary:hover svg,
+.dark .hover\:bg-primary-light:hover svg {
+  stroke: var(--card) !important;
+}
+
