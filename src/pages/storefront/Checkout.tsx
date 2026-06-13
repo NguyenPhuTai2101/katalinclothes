@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useCart } from '../../context/CartContext';
 import { Link } from 'react-router-dom';
 import { formatPriceVND } from '../../utils/formatters';
-import { ShoppingBag, ArrowLeft, Trash2, CreditCard, ChevronRight, Check } from 'lucide-react';
+import { ShoppingBag, ArrowLeft, Trash2, CreditCard, ChevronRight, Check, MapPin } from 'lucide-react';
 import type { Order } from '../../db/mockDb';
 import { useLanguage } from '../../context/LanguageContext';
 
@@ -13,14 +13,28 @@ export const Checkout: React.FC = () => {
   const [createdOrder, setCreatedOrder] = useState<Order | null>(null);
   const [submitting, setSubmitting] = useState<boolean>(false);
 
+  // Address picker API states
+  const [provinces, setProvinces] = useState<any[]>([]);
+  const [districts, setDistricts] = useState<any[]>([]);
+  const [wards, setWards] = useState<any[]>([]);
+
+  const [selectedProvinceCode, setSelectedProvinceCode] = useState<string>('');
+  const [selectedDistrictCode, setSelectedDistrictCode] = useState<string>('');
+  const [selectedWardCode, setSelectedWardCode] = useState<string>('');
+
+  const [streetAddress, setStreetAddress] = useState<string>('');
+  const [provinceName, setProvinceName] = useState<string>('');
+  const [districtName, setDistrictName] = useState<string>('');
+  const [wardName, setWardName] = useState<string>('');
+
   // Form Fields
   const [formData, setFormData] = useState({
     firstName: 'Nguyễn',
     lastName: 'Văn Minh',
     email: 'minh.nguyen@gmail.com',
     phone: '0901234567',
-    address: '123 Nguyễn Huệ, Phường Bến Nghé',
-    city: 'Hồ Chí Minh',
+    address: '',
+    city: '',
     postalCode: '70000',
     country: 'VN',
     paymentMethod: 'stripe', // 'stripe' | 'cod'
@@ -47,6 +61,11 @@ export const Checkout: React.FC = () => {
   const handleCheckout = async (e: React.FormEvent) => {
     e.preventDefault();
     if (cartItems.length === 0) return;
+
+    if (!selectedProvinceCode || !selectedDistrictCode || !selectedWardCode || !streetAddress) {
+      alert(t('Vui lòng chọn đầy đủ thông tin địa chỉ giao hàng.', 'Please complete all shipping address selections.'));
+      return;
+    }
     
     setSubmitting(true);
     try {
@@ -59,6 +78,93 @@ export const Checkout: React.FC = () => {
       setSubmitting(false);
     }
   };
+
+  // Fetch provinces on mount
+  useEffect(() => {
+    const fetchProvinces = async () => {
+      try {
+        const res = await fetch('https://provinces.open-api.vn/api/?depth=1');
+        if (res.ok) {
+          const data = await res.json();
+          setProvinces(data);
+        }
+      } catch (err) {
+        console.error('Failed to fetch provinces:', err);
+      }
+    };
+    fetchProvinces();
+  }, []);
+
+  // Fetch districts when selectedProvinceCode changes
+  useEffect(() => {
+    if (!selectedProvinceCode) {
+      setDistricts([]);
+      setWards([]);
+      setSelectedDistrictCode('');
+      setSelectedWardCode('');
+      setDistrictName('');
+      setWardName('');
+      return;
+    }
+    const fetchDistricts = async () => {
+      try {
+        const res = await fetch(`https://provinces.open-api.vn/api/p/${selectedProvinceCode}?depth=2`);
+        if (res.ok) {
+          const data = await res.json();
+          setDistricts(data.districts || []);
+          setWards([]);
+          setSelectedDistrictCode('');
+          setSelectedWardCode('');
+          setDistrictName('');
+          setWardName('');
+        }
+      } catch (err) {
+        console.error('Failed to fetch districts:', err);
+      }
+    };
+    fetchDistricts();
+  }, [selectedProvinceCode]);
+
+  // Fetch wards when selectedDistrictCode changes
+  useEffect(() => {
+    if (!selectedDistrictCode) {
+      setWards([]);
+      setSelectedWardCode('');
+      setWardName('');
+      return;
+    }
+    const fetchWards = async () => {
+      try {
+        const res = await fetch(`https://provinces.open-api.vn/api/d/${selectedDistrictCode}?depth=2`);
+        if (res.ok) {
+          const data = await res.json();
+          setWards(data.wards || []);
+          setSelectedWardCode('');
+          setWardName('');
+        }
+      } catch (err) {
+        console.error('Failed to fetch wards:', err);
+      }
+    };
+    fetchWards();
+  }, [selectedDistrictCode]);
+
+  // Update combined address inside formData
+  useEffect(() => {
+    const provinceText = provinceName;
+    const districtText = districtName;
+    const wardText = wardName;
+
+    let fullAddress = streetAddress;
+    if (wardText) fullAddress += `, ${wardText}`;
+    if (districtText) fullAddress += `, ${districtText}`;
+
+    setFormData(prev => ({
+      ...prev,
+      city: provinceText || prev.city,
+      address: fullAddress || prev.address
+    }));
+  }, [streetAddress, provinceName, districtName, wardName]);
 
   const shippingFee = cartSubtotal > 1000000 ? 0 : 40000;
   const grandTotal = cartSubtotal + shippingFee;
@@ -119,7 +225,7 @@ export const Checkout: React.FC = () => {
                             )}
                             <button
                               onClick={() => removeFromCart(item.id)}
-                              className="text-[10px] text-red-500 hover:text-red-700 flex items-center gap-1 mt-1 font-semibold"
+                              className="text-[10px] text-red-500 hover:text-red-700 flex items-center gap-1 mt-1 font-semibold cursor-pointer"
                             >
                               <Trash2 className="w-3 h-3" /> {t('Xóa', 'Remove')}
                             </button>
@@ -129,14 +235,14 @@ export const Checkout: React.FC = () => {
                           <div className="flex items-center justify-center border border-primary/15 rounded bg-card w-24 mx-auto">
                             <button
                               onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                              className="px-2 py-1 text-secondary hover:bg-surface"
+                              className="px-2 py-1 text-secondary hover:bg-surface cursor-pointer"
                             >
                               -
                             </button>
                             <span className="flex-1 text-center font-mono font-semibold">{item.quantity}</span>
                             <button
                               onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                              className="px-2 py-1 text-secondary hover:bg-surface"
+                              className="px-2 py-1 text-secondary hover:bg-surface cursor-pointer"
                             >
                               +
                             </button>
@@ -265,28 +371,103 @@ export const Checkout: React.FC = () => {
               </div>
             </div>
 
-            <div className="space-y-1.5 text-left">
-              <label className="text-[10px] uppercase tracking-widest font-semibold text-secondary">{t('Địa chỉ giao hàng', 'Street Address')}</label>
-              <input
-                type="text"
-                required
-                name="address"
-                value={formData.address}
-                onChange={handleInputChange}
-                className="w-full text-xs px-3 py-2 bg-surface border border-primary/10 rounded focus:outline-none focus:border-primary text-primary"
-              />
-            </div>
+            {/* Vietnamese Division Selectors */}
+            <div className="border border-outline-custom rounded-lg p-4 bg-surface/40 space-y-4">
+              <div className="flex items-center gap-2 text-secondary text-[10px] font-bold uppercase tracking-wider pb-2 border-b border-outline-custom">
+                <MapPin className="w-4 h-4 text-accent" />
+                <span>{t('Bộ chọn địa chỉ chính xác', 'Accurate Address Selector')}</span>
+              </div>
 
-            <div className="grid grid-cols-3 gap-4">
-              <div className="col-span-2 space-y-1.5 text-left">
-                <label className="text-[10px] uppercase tracking-widest font-semibold text-secondary">{t('Tỉnh / Thành phố', 'City / Region')}</label>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                {/* Province Select */}
+                <div className="space-y-1.5 text-left">
+                  <label className="text-[10px] uppercase tracking-widest font-semibold text-secondary">{t('Tỉnh / Thành', 'Province')}</label>
+                  <select
+                    required
+                    value={selectedProvinceCode}
+                    onChange={(e) => {
+                      const code = e.target.value;
+                      setSelectedProvinceCode(code);
+                      const name = provinces.find(p => String(p.code) === String(code))?.name || '';
+                      setProvinceName(name);
+                    }}
+                    className="w-full text-xs px-3 py-2 bg-card border border-primary/10 rounded focus:outline-none focus:border-primary text-primary"
+                  >
+                    <option value="">{t('-- Chọn Tỉnh/Thành --', '-- Select Province --')}</option>
+                    {provinces.map(p => (
+                      <option key={p.code} value={p.code}>{p.name}</option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* District Select */}
+                <div className="space-y-1.5 text-left">
+                  <label className="text-[10px] uppercase tracking-widest font-semibold text-secondary">{t('Quận / Huyện', 'District')}</label>
+                  <select
+                    required
+                    disabled={!selectedProvinceCode}
+                    value={selectedDistrictCode}
+                    onChange={(e) => {
+                      const code = e.target.value;
+                      setSelectedDistrictCode(code);
+                      const name = districts.find(d => String(d.code) === String(code))?.name || '';
+                      setDistrictName(name);
+                    }}
+                    className="w-full text-xs px-3 py-2 bg-card border border-primary/10 rounded focus:outline-none focus:border-primary text-primary disabled:opacity-55"
+                  >
+                    <option value="">{t('-- Chọn Quận/Huyện --', '-- Select District --')}</option>
+                    {districts.map(d => (
+                      <option key={d.code} value={d.code}>{d.name}</option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Ward Select */}
+                <div className="space-y-1.5 text-left">
+                  <label className="text-[10px] uppercase tracking-widest font-semibold text-secondary">{t('Phường / Xã', 'Ward')}</label>
+                  <select
+                    required
+                    disabled={!selectedDistrictCode}
+                    value={selectedWardCode}
+                    onChange={(e) => {
+                      const code = e.target.value;
+                      setSelectedWardCode(code);
+                      const name = wards.find(w => String(w.code) === String(code))?.name || '';
+                      setWardName(name);
+                    }}
+                    className="w-full text-xs px-3 py-2 bg-card border border-primary/10 rounded focus:outline-none focus:border-primary text-primary disabled:opacity-55"
+                  >
+                    <option value="">{t('-- Chọn Phường/Xã --', '-- Select Ward --')}</option>
+                    {wards.map(w => (
+                      <option key={w.code} value={w.code}>{w.name}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
+              {/* Detailed Street Address */}
+              <div className="space-y-1.5 text-left pt-2">
+                <label className="text-[10px] uppercase tracking-widest font-semibold text-secondary">{t('Số nhà, tên đường...', 'Street Address (House no, street name)')}</label>
                 <input
                   type="text"
                   required
-                  name="city"
-                  value={formData.city}
-                  onChange={handleInputChange}
-                  className="w-full text-xs px-3 py-2 bg-surface border border-primary/10 rounded focus:outline-none focus:border-primary text-primary"
+                  value={streetAddress}
+                  onChange={(e) => setStreetAddress(e.target.value)}
+                  placeholder={t('Ví dụ: 123 Nguyễn Huệ', 'e.g. 123 Nguyen Hue')}
+                  className="w-full text-xs px-3 py-2 bg-card border border-primary/10 rounded focus:outline-none focus:border-primary text-primary"
+                />
+              </div>
+            </div>
+
+            {/* Postal code & Country info */}
+            <div className="grid grid-cols-3 gap-4">
+              <div className="col-span-2 space-y-1.5 text-left">
+                <label className="text-[10px] uppercase tracking-widest font-semibold text-secondary">{t('Quốc gia', 'Country')}</label>
+                <input
+                  type="text"
+                  disabled
+                  value="Vietnam"
+                  className="w-full text-xs px-3 py-2 bg-surface/65 border border-primary/5 rounded text-secondary font-semibold"
                 />
               </div>
               <div className="space-y-1.5 text-left">
