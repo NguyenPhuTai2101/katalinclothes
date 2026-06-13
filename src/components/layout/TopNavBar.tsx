@@ -118,22 +118,10 @@ export const TopNavBar: React.FC<TopNavBarProps> = ({ onOpenLogin }) => {
                 <Search className="w-4.5 h-4.5" />
               </button>
 
-              {/* PWA Install Button */}
-              {showInstallBtn && (
-                <button
-                  onClick={handleInstallClick}
-                  className="p-2 hover:opacity-75 focus:outline-none text-primary cursor-pointer flex items-center gap-1.5"
-                  title={t('Tải ứng dụng', 'Install App')}
-                >
-                  <Download className="w-4 h-4" />
-                  <span className="text-[9px] font-bold tracking-widest uppercase hidden lg:inline">{t('Tải App', 'Install')}</span>
-                </button>
-              )}
-
               {/* Theme Toggle */}
               <button
                 onClick={toggleTheme}
-                className="p-2 hover:opacity-75 focus:outline-none text-primary cursor-pointer"
+                className="p-2 hover:opacity-75 focus:outline-none text-primary cursor-pointer hidden md:block"
                 title={theme === 'light' ? 'Switch to Dark Mode' : 'Switch to Light Mode'}
               >
                 {theme === 'light' ? <Moon className="w-4.5 h-4.5" /> : <Sun className="w-4.5 h-4.5" />}
@@ -142,7 +130,7 @@ export const TopNavBar: React.FC<TopNavBarProps> = ({ onOpenLogin }) => {
               {/* Language Switcher */}
               <button
                 onClick={() => setLanguage(language === 'vi' ? 'en' : 'vi')}
-                className="text-[9px] tracking-widest font-mono font-semibold hover:opacity-75 focus:outline-none px-1.5 py-0.5 border border-primary/20 rounded cursor-pointer text-primary"
+                className="text-[9px] tracking-widest font-mono font-semibold hover:opacity-75 focus:outline-none px-1.5 py-0.5 border border-primary/20 rounded cursor-pointer text-primary hidden md:block"
                 title={language === 'vi' ? 'Switch to English' : 'Chuyển sang Tiếng Việt'}
               >
                 {language === 'vi' ? 'EN' : 'VI'}
@@ -177,7 +165,7 @@ export const TopNavBar: React.FC<TopNavBarProps> = ({ onOpenLogin }) => {
               </Link>
 
               {/* Profile Dropdown Trigger */}
-              <div className="relative">
+              <div className="relative hidden md:block">
                 {isDefaultGuest ? (
                   <button
                     onClick={() => setProfileDropdownOpen(!profileDropdownOpen)}
