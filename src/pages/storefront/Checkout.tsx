@@ -5,10 +5,12 @@ import { formatPriceVND } from '../../utils/formatters';
 import { ShoppingBag, ArrowLeft, Trash2, CreditCard, ChevronRight, Check, MapPin } from 'lucide-react';
 import type { Order } from '../../db/mockDb';
 import { useLanguage } from '../../context/LanguageContext';
+import { useAuth } from '../../context/AuthContext';
 
 export const Checkout: React.FC = () => {
   const { language, t } = useLanguage();
   const { cartItems, cartSubtotal, cartCount, updateQuantity, removeFromCart, checkoutCart } = useCart();
+  const { user } = useAuth();
   const [step, setStep] = useState<number>(1); // 1: Review, 2: Info, 3: Success
   const [createdOrder, setCreatedOrder] = useState<Order | null>(null);
   const [submitting, setSubmitting] = useState<boolean>(false);
@@ -95,6 +97,33 @@ export const Checkout: React.FC = () => {
     fetchProvinces();
   }, []);
 
+  // Auto-fill user profile info if logged in (once when user details load)
+  useEffect(() => {
+    if (user) {
+      const nameParts = user.full_name.trim().split(' ');
+      const last = nameParts.pop() || '';
+      const first = nameParts.join(' ') || '';
+
+      setFormData(prev => ({
+        ...prev,
+        firstName: first || prev.firstName,
+        lastName: last || prev.lastName,
+        email: user.email || prev.email,
+        phone: user.phone || prev.phone,
+        postalCode: user.postal_code || prev.postalCode,
+      }));
+
+      // Start the cascading auto-fill
+      if (user.province_code) {
+        setSelectedProvinceCode(user.province_code);
+        setProvinceName(user.city || '');
+      }
+      if (user.street_address) {
+        setStreetAddress(user.street_address);
+      }
+    }
+  }, [user]);
+
   // Fetch districts when selectedProvinceCode changes
   useEffect(() => {
     if (!selectedProvinceCode) {
@@ -111,12 +140,21 @@ export const Checkout: React.FC = () => {
         const res = await fetch(`https://provinces.open-api.vn/api/p/${selectedProvinceCode}?depth=2`);
         if (res.ok) {
           const data = await res.json();
-          setDistricts(data.districts || []);
+          const list = data.districts || [];
+          setDistricts(list);
           setWards([]);
-          setSelectedDistrictCode('');
-          setSelectedWardCode('');
-          setDistrictName('');
-          setWardName('');
+
+          // Prefill district code if it matches the user profile's province
+          if (user && user.province_code === selectedProvinceCode && user.district_code) {
+            setSelectedDistrictCode(user.district_code);
+            const matched = list.find((d: any) => String(d.code) === String(user.district_code));
+            if (matched) setDistrictName(matched.name);
+          } else {
+            setSelectedDistrictCode('');
+            setSelectedWardCode('');
+            setDistrictName('');
+            setWardName('');
+          }
         }
       } catch (err) {
         console.error('Failed to fetch districts:', err);
@@ -138,9 +176,18 @@ export const Checkout: React.FC = () => {
         const res = await fetch(`https://provinces.open-api.vn/api/d/${selectedDistrictCode}?depth=2`);
         if (res.ok) {
           const data = await res.json();
-          setWards(data.wards || []);
-          setSelectedWardCode('');
-          setWardName('');
+          const list = data.wards || [];
+          setWards(list);
+
+          // Prefill ward code if it matches the user profile's district
+          if (user && user.district_code === selectedDistrictCode && user.ward_code) {
+            setSelectedWardCode(user.ward_code);
+            const matched = list.find((w: any) => String(w.code) === String(user.ward_code));
+            if (matched) setWardName(matched.name);
+          } else {
+            setSelectedWardCode('');
+            setWardName('');
+          }
         }
       } catch (err) {
         console.error('Failed to fetch wards:', err);

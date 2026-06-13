@@ -8,6 +8,13 @@ export interface User {
   role: 'customer' | 'admin';
   phone?: string;
   avatar_url?: string;
+  address?: string;
+  city?: string;
+  postal_code?: string;
+  province_code?: string;
+  district_code?: string;
+  ward_code?: string;
+  street_address?: string;
 }
 
 interface AuthContextType {
@@ -20,6 +27,7 @@ interface AuthContextType {
   login: (email: string, password: string) => Promise<void>;
   register: (email: string, password: string, fullName: string) => Promise<void>;
   logout: () => void;
+  updateProfile: (updates: Partial<User>) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -47,7 +55,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           full_name: data.full_name || '',
           role: (data.role as 'customer' | 'admin') || 'customer',
           phone: data.phone || '',
-          avatar_url: data.avatar_url || ''
+          avatar_url: data.avatar_url || '',
+          address: data.address || '',
+          city: data.city || '',
+          postal_code: data.postal_code || '',
+          province_code: data.province_code || '',
+          district_code: data.district_code || '',
+          ward_code: data.ward_code || '',
+          street_address: data.street_address || ''
         };
         setUser(syncedUser);
         setRoleState(syncedUser.role);
@@ -157,7 +172,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       email: 'minh.nguyen@gmail.com',
       full_name: 'Nguyễn Văn Minh',
       role: 'customer',
-      phone: '0901234567'
+      phone: '0901234567',
+      address: '123 Nguyễn Huệ, Phường Bến Nghé, Quận 1',
+      city: 'Thành phố Hồ Chí Minh',
+      postal_code: '70000',
+      province_code: '79', // Ho Chi Minh City code in API
+      district_code: '760', // District 1 code in API
+      ward_code: '26734', // Ben Nghe ward code in API
+      street_address: '123 Nguyễn Huệ'
     };
     setUser(customerUser);
     setRoleState('customer');
@@ -170,7 +192,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       email: 'bach.tran@admin.com',
       full_name: 'Trần Hoàng Bách',
       role: 'admin',
-      phone: '0988888888'
+      phone: '0988888888',
+      address: '321 Lê Lợi, Phường Bến Nghé, Quận 1',
+      city: 'Thành phố Hồ Chí Minh',
+      postal_code: '70000',
+      province_code: '79',
+      district_code: '760',
+      ward_code: '26734',
+      street_address: '321 Lê Lợi'
     };
     setUser(adminUser);
     setRoleState('admin');
@@ -197,7 +226,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
       if (error) {
         // Check if we can fall back to local mock authentication
-        // If user credentials match mock admin or customer emails
         if (email === 'bach.tran@admin.com') {
           loginAsAdmin();
           return;
@@ -212,7 +240,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         await syncProfile(data.user);
       }
     } catch (err: any) {
-      // Fallback: If mock matching works or supabase is blocked
+      // Fallback
       if (email === 'bach.tran@admin.com') {
         loginAsAdmin();
         return;
@@ -243,7 +271,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       if (error) throw error;
 
       if (data?.user) {
-        // Try to sync/create profile record
         await syncProfile(data.user);
       }
     } catch (err: any) {
@@ -277,6 +304,44 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
+  const updateProfile = async (updates: Partial<User>) => {
+    if (!user) throw new Error('No user is currently logged in');
+
+    const updatedUser = { ...user, ...updates };
+
+    // Try updating Supabase DB profiles table
+    try {
+      const dbPayload = {
+        full_name: updates.full_name !== undefined ? updates.full_name : user.full_name,
+        phone: updates.phone !== undefined ? updates.phone : user.phone,
+        avatar_url: updates.avatar_url !== undefined ? updates.avatar_url : user.avatar_url,
+        address: updates.address !== undefined ? updates.address : user.address,
+        city: updates.city !== undefined ? updates.city : user.city,
+        postal_code: updates.postal_code !== undefined ? updates.postal_code : user.postal_code,
+        province_code: updates.province_code !== undefined ? updates.province_code : user.province_code,
+        district_code: updates.district_code !== undefined ? updates.district_code : user.district_code,
+        ward_code: updates.ward_code !== undefined ? updates.ward_code : user.ward_code,
+        street_address: updates.street_address !== undefined ? updates.street_address : user.street_address,
+        updated_at: new Date().toISOString()
+      };
+
+      const { error } = await supabase
+        .from('profiles')
+        .update(dbPayload)
+        .eq('id', user.id);
+
+      if (error) {
+        console.warn('Supabase profile update failed, falling back to local session: ', error.message);
+      }
+    } catch (err) {
+      console.warn('Database connection failed, updating locally only: ', err);
+    }
+
+    // Always update local React state and localStorage to ensure local responsiveness
+    setUser(updatedUser);
+    localStorage.setItem('ktl_current_user', JSON.stringify(updatedUser));
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -288,7 +353,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         loginAsAdmin,
         login,
         register,
-        logout
+        logout,
+        updateProfile
       }}
     >
       {children}
@@ -303,4 +369,3 @@ export const useAuth = () => {
   }
   return context;
 };
-

@@ -16,6 +16,8 @@ import { Collections } from './pages/storefront/Collections';
 import { ProductDetail } from './pages/storefront/ProductDetail';
 import { Checkout } from './pages/storefront/Checkout';
 import { Wishlist } from './pages/storefront/Wishlist';
+import { Profile } from './pages/storefront/Profile';
+
 
 // Admin Pages
 import { Dashboard } from './pages/admin/Dashboard';
@@ -78,6 +80,8 @@ function App() {
                     <Route path="products/:slug" element={<ProductDetail />} />
                     <Route path="checkout" element={<Checkout />} />
                     <Route path="wishlist" element={<Wishlist />} />
+                    <Route path="profile" element={<Profile />} />
+
                   </Route>
 
                   {/* Admin Dashboard Routes */}

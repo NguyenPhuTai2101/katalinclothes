@@ -202,6 +202,13 @@ export const TopNavBar: React.FC<TopNavBarProps> = ({ onOpenLogin }) => {
                           </span>
                         </div>
                         <div className="py-1">
+                          <Link
+                            to="/profile"
+                            onClick={() => setProfileDropdownOpen(false)}
+                            className="w-full text-left block px-4 py-2 text-xs text-primary hover:bg-surface transition"
+                          >
+                            {t('Hồ sơ của tôi', 'My Profile')}
+                          </Link>
                           {role === 'admin' && (
                             <Link
                               to="/admin"

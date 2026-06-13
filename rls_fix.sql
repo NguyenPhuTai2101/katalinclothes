@@ -62,3 +62,16 @@ CREATE POLICY "Anyone can manage order items dev" ON public.order_items
 DROP POLICY IF EXISTS "Anyone can subscribe" ON public.newsletter_subscribers;
 CREATE POLICY "Anyone can subscribe" ON public.newsletter_subscribers 
   FOR INSERT WITH CHECK (true);
+
+-- ------------------------------------------------------------
+-- PHẦN 3: Bổ sung các cột Lưu Địa Chỉ Mặc Định cho bảng Profiles
+-- ------------------------------------------------------------
+ALTER TABLE public.profiles 
+  ADD COLUMN IF NOT EXISTS address TEXT,
+  ADD COLUMN IF NOT EXISTS city TEXT,
+  ADD COLUMN IF NOT EXISTS postal_code TEXT,
+  ADD COLUMN IF NOT EXISTS province_code TEXT,
+  ADD COLUMN IF NOT EXISTS district_code TEXT,
+  ADD COLUMN IF NOT EXISTS ward_code TEXT,
+  ADD COLUMN IF NOT EXISTS street_address TEXT;
+
