@@ -50,7 +50,7 @@ export const Home: React.FC = () => {
             <div className="flex flex-col sm:flex-row items-center justify-center md:justify-start gap-4 pt-4">
               <Link
                 to="/collections"
-                className="w-full sm:w-auto px-8 py-3.5 bg-white text-primary text-xs tracking-widest uppercase font-semibold hover:bg-accent hover:text-white transition-all duration-300 rounded shadow-md text-center"
+                className="w-full sm:w-auto px-8 py-3.5 bg-white text-[#1a1a1a] text-xs tracking-widest uppercase font-semibold hover:bg-accent hover:text-white transition-all duration-300 rounded shadow-md text-center"
               >
                 {t('Mua bộ sưu tập', 'Shop Collection')}
               </Link>
@@ -174,14 +174,14 @@ export const Home: React.FC = () => {
                   <div className="absolute inset-x-0 bottom-0 p-4 bg-gradient-to-t from-black/50 to-transparent translate-y-full group-hover:translate-y-0 transition-transform duration-300 flex justify-between gap-2">
                     <button
                       onClick={() => addToCart(prod, prod.variants[0] || undefined)}
-                      className="flex-1 bg-white hover:bg-primary hover:text-white text-primary text-[10px] font-semibold tracking-widest uppercase py-2.5 px-3 rounded shadow transition-all duration-300 flex items-center justify-center gap-1.5"
+                      className="flex-1 bg-card hover:bg-primary hover:text-card text-primary text-[10px] font-semibold tracking-widest uppercase py-2.5 px-3 rounded shadow transition-all duration-300 flex items-center justify-center gap-1.5 cursor-pointer"
                     >
                       <ShoppingBag className="w-3.5 h-3.5" />
                       {t('Thêm vào giỏ', 'Add to Cart')}
                     </button>
                     <button
                       onClick={() => toggleWishlist(prod)}
-                      className="bg-white/95 hover:bg-white p-2.5 rounded shadow text-primary hover:text-accent transition"
+                      className="bg-card border border-outline-custom hover:bg-surface p-2.5 rounded shadow text-primary hover:text-accent transition cursor-pointer"
                       aria-label="Wishlist"
                     >
                       <Heart className={`w-3.5 h-3.5 ${isInWishlist(prod.id) ? 'fill-accent text-accent' : ''}`} />

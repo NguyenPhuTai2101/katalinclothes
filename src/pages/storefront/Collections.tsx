@@ -292,14 +292,14 @@ export const Collections: React.FC = () => {
                       <div className="absolute inset-x-0 bottom-0 p-4 bg-gradient-to-t from-black/50 to-transparent translate-y-full group-hover:translate-y-0 transition-transform duration-300 flex justify-between gap-2">
                         <button
                           onClick={() => addToCart(prod, prod.variants[0] || undefined)}
-                          className="flex-1 bg-card hover:bg-primary hover:text-white text-primary text-[10px] font-semibold tracking-widest uppercase py-2.5 px-3 rounded shadow transition-all duration-300 flex items-center justify-center gap-1.5 cursor-pointer"
+                          className="flex-1 bg-card hover:bg-primary hover:text-card text-primary text-[10px] font-semibold tracking-widest uppercase py-2.5 px-3 rounded shadow transition-all duration-300 flex items-center justify-center gap-1.5 cursor-pointer"
                         >
                           <ShoppingBag className="w-3.5 h-3.5" />
                           {t('Thêm vào giỏ', 'Add to Cart')}
                         </button>
                         <button
                           onClick={() => toggleWishlist(prod)}
-                          className="bg-card/95 hover:bg-card p-2.5 rounded shadow text-primary hover:text-accent transition cursor-pointer"
+                          className="bg-card border border-outline-custom hover:bg-surface p-2.5 rounded shadow text-primary hover:text-accent transition cursor-pointer"
                           aria-label="Wishlist"
                         >
                           <Heart className={`w-3.5 h-3.5 ${isInWishlist(prod.id) ? 'fill-accent text-accent' : ''}`} />
