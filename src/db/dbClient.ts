@@ -5,7 +5,16 @@ import type { Product, Category, Customer, Order, HomepageSettings } from './moc
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || '';
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+let supabaseClient: any = null;
+try {
+  if (supabaseUrl && supabaseAnonKey) {
+    supabaseClient = createClient(supabaseUrl, supabaseAnonKey);
+  }
+} catch (e) {
+  console.error('Failed to initialize Supabase client:', e);
+}
+
+export const supabase = supabaseClient;
 
 if (typeof window !== 'undefined') {
   mockDb.initialize();
@@ -30,6 +39,12 @@ async function ensureSeeded() {
   if (isSeeded || isSeeding) return;
   isSeeding = true;
   try {
+    if (!supabase) {
+      console.warn('Supabase is not initialized. Using local mockDb storage.');
+      isSeeded = true; // Set to true so we don't try again
+      isSeeding = false;
+      return;
+    }
     // 1. Fetch categories
     const { data: categories, error: catError } = await supabase
       .from('categories')
@@ -65,7 +80,7 @@ async function ensureSeeded() {
       };
 
       const categorySlugToUuid: Record<string, string> = {};
-      categories.forEach(c => {
+      categories.forEach((c: any) => {
         categorySlugToUuid[c.slug] = c.id;
       });
 
@@ -158,7 +173,7 @@ async function ensureSeeded() {
               let originalSlug = 'band-collar-linen-shirt';
               if (item.product_id === 'prod-2') originalSlug = 'silk-midi-slip-dress';
               
-              const matchedDbProd = dbProducts.find(p => p.slug === originalSlug);
+              const matchedDbProd = dbProducts.find((p: any) => p.slug === originalSlug);
               if (matchedDbProd) {
                 const matchedDbVar = matchedDbProd.variants?.[0];
                 const unitPrice = Number(matchedDbProd.price);
@@ -245,7 +260,7 @@ export const db = {
         return mockDb.getProducts();
       }
 
-      return data.map(p => ({
+      return data.map((p: any) => ({
         ...p,
         price: Number(p.price),
         compare_at_price: p.compare_at_price ? Number(p.compare_at_price) : undefined,
@@ -616,7 +631,7 @@ export const db = {
       const customerMap = new Map<string, Customer>();
 
       if (profiles) {
-        profiles.forEach(p => {
+        profiles.forEach((p: any) => {
           customerMap.set(p.email.toLowerCase(), {
             id: p.id,
             full_name: p.full_name || p.email,
@@ -632,7 +647,7 @@ export const db = {
       }
 
       if (orders) {
-        orders.forEach(o => {
+        orders.forEach((o: any) => {
           const email = o.shipping_email ? o.shipping_email.toLowerCase() : '';
           if (!email) return;
 
@@ -681,7 +696,7 @@ export const db = {
         return mockDb.getOrders();
       }
 
-      return data.map(o => ({
+      return data.map((o: any) => ({
         ...o,
         subtotal: Number(o.subtotal),
         shipping_fee: Number(o.shipping_fee),
