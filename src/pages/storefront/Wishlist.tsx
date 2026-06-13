@@ -41,18 +41,18 @@ export const Wishlist: React.FC = () => {
           </Link>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 animate-fadeIn">
+        <div className="grid grid-cols-3 sm:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-8 animate-fadeIn">
           {wishlistItems.map((prod) => {
             return (
-              <div key={prod.id} className="group flex flex-col space-y-4 border border-outline-custom rounded bg-card p-4 shadow-sm relative">
+              <div key={prod.id} className="group flex flex-col space-y-1 sm:space-y-4 border border-outline-custom rounded bg-card p-1.5 sm:p-4 shadow-sm relative">
                 
                 {/* Remove button absolute */}
                 <button
                   onClick={() => removeFromWishlist(prod.id)}
-                  className="absolute top-6 right-6 z-10 bg-card/90 hover:bg-card text-secondary hover:text-red-500 p-2 rounded-full shadow border border-outline-custom transition cursor-pointer"
+                  className="absolute top-2.5 right-2.5 sm:top-6 sm:right-6 z-10 bg-card/90 hover:bg-card text-secondary hover:text-red-500 p-1 sm:p-2 rounded-full shadow border border-outline-custom transition cursor-pointer"
                   aria-label="Remove item"
                 >
-                  <Trash2 className="w-3.5 h-3.5" />
+                  <Trash2 className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
                 </button>
 
                 {/* Image */}
@@ -67,25 +67,28 @@ export const Wishlist: React.FC = () => {
                 </div>
 
                 {/* Details */}
-                <div className="space-y-1 text-xs">
-                  <span className="text-[10px] text-secondary font-mono tracking-widest uppercase">
-                    SKU: {prod.sku}
-                  </span>
-                  <div className="flex justify-between items-start">
-                    <Link to={`/products/${prod.slug}`} className="font-serif text-sm font-semibold hover:underline text-primary">
+                <div className="flex flex-col justify-between items-stretch text-left space-y-1 text-xs">
+                  <div>
+                    <span className="text-[8px] sm:text-[10px] text-secondary font-mono tracking-widest uppercase block">
+                      {prod.sku}
+                    </span>
+                    <Link to={`/products/${prod.slug}`} className="font-serif text-[10px] sm:text-sm font-semibold hover:underline text-primary line-clamp-2 leading-tight block">
                       {t(prod.name_vi, prod.name_en)}
                     </Link>
-                    <span className="font-semibold text-primary">{formatPriceVND(prod.price)}</span>
+                  </div>
+                  <div className="pt-1 flex flex-col sm:flex-row sm:items-baseline justify-between gap-0.5 sm:gap-2">
+                    <span className="text-[10px] sm:text-xs text-primary font-semibold block">{formatPriceVND(prod.price)}</span>
                   </div>
                 </div>
 
                 {/* Actions */}
                 <button
                   onClick={() => handleMoveToCart(prod)}
-                  className="w-full bg-primary hover:bg-primary-light text-white text-[10px] tracking-widest uppercase font-semibold py-2.5 rounded shadow flex items-center justify-center gap-1.5 transition cursor-pointer"
+                  className="w-full bg-primary hover:bg-primary-light text-white text-[8px] sm:text-[10px] tracking-widest uppercase font-semibold py-1.5 sm:py-2.5 rounded shadow flex items-center justify-center gap-1 transition cursor-pointer"
                 >
-                  <ShoppingBag className="w-3.5 h-3.5" />
-                  {t('Thêm vào giỏ hàng', 'Move to Shopping Cart')}
+                  <ShoppingBag className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
+                  <span className="hidden sm:inline">{t('Thêm vào giỏ hàng', 'Move to Cart')}</span>
+                  <span className="sm:hidden">{t('Thêm', 'Add')}</span>
                 </button>
               </div>
             );

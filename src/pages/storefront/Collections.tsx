@@ -263,12 +263,12 @@ export const Collections: React.FC = () => {
 
           {/* Grid */}
           {filteredProducts.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+            <div className="grid grid-cols-3 sm:grid-cols-2 md:grid-cols-3 gap-2 sm:gap-8">
               {filteredProducts.map((prod) => {
                 const hasDiscount = prod.compare_at_price && prod.compare_at_price > prod.price;
 
                 return (
-                  <div key={prod.id} className="group flex flex-col space-y-4 animate-fadeIn">
+                  <div key={prod.id} className="group flex flex-col space-y-1 sm:space-y-4 animate-fadeIn">
                     <div className="relative aspect-[3/4] bg-surface overflow-hidden rounded border border-primary/5">
                       <Link to={`/products/${prod.slug}`} className="block h-full w-full">
                         <img
@@ -279,17 +279,17 @@ export const Collections: React.FC = () => {
                       </Link>
 
                       {prod.is_new_arrival && (
-                        <span className="absolute top-4 left-4 bg-primary text-white text-[9px] tracking-widest uppercase px-2 py-0.5 rounded font-semibold">
+                        <span className="absolute top-1.5 left-1.5 sm:top-4 sm:left-4 bg-primary text-white text-[7px] sm:text-[9px] tracking-widest uppercase px-1 sm:px-2 py-0.5 rounded font-semibold">
                           {t('Mới', 'New')}
                         </span>
                       )}
                       {hasDiscount && (
-                        <span className="absolute top-4 right-4 bg-accent text-white text-[9px] tracking-widest uppercase px-2 py-0.5 rounded font-semibold">
+                        <span className="absolute top-1.5 right-1.5 sm:top-4 sm:right-4 bg-accent text-white text-[7px] sm:text-[9px] tracking-widest uppercase px-1 sm:px-2 py-0.5 rounded font-semibold">
                           Sale
                         </span>
                       )}
 
-                      <div className="absolute inset-x-0 bottom-0 p-4 bg-gradient-to-t from-black/50 to-transparent translate-y-full group-hover:translate-y-0 transition-transform duration-300 flex justify-between gap-2">
+                      <div className="absolute inset-x-0 bottom-0 p-4 bg-gradient-to-t from-black/50 to-transparent translate-y-full group-hover:translate-y-0 transition-transform duration-300 hidden sm:flex justify-between gap-2">
                         <button
                           onClick={() => addToCart(prod, prod.variants[0] || undefined)}
                           className="flex-1 bg-card hover:bg-primary hover:text-card text-primary text-[10px] font-semibold tracking-widest uppercase py-2.5 px-3 rounded shadow transition-all duration-300 flex items-center justify-center gap-1.5 cursor-pointer"
@@ -307,25 +307,25 @@ export const Collections: React.FC = () => {
                       </div>
                     </div>
 
-                    <div className="flex justify-between items-start text-xs tracking-wider">
-                      <div className="space-y-1">
-                        <span className="text-[10px] text-secondary font-mono tracking-widest uppercase block">
+                    <div className="flex flex-col justify-between items-stretch text-left space-y-1">
+                      <div>
+                        <span className="text-[8px] sm:text-[10px] text-secondary font-mono tracking-widest uppercase block">
                           {prod.sku}
                         </span>
-                        <Link to={`/products/${prod.slug}`} className="font-serif text-sm font-semibold hover:underline text-primary">
+                        <Link to={`/products/${prod.slug}`} className="font-serif text-[10px] sm:text-sm font-semibold hover:underline text-primary line-clamp-2 leading-tight block">
                           {language === 'vi' ? prod.name_vi : prod.name_en}
                         </Link>
                         {language === 'vi' ? (
-                          <p className="text-[10px] text-secondary/70 italic">{prod.name_en}</p>
+                          <p className="text-[8px] sm:text-[10px] text-secondary/70 italic line-clamp-1 mt-0.5">{prod.name_en}</p>
                         ) : (
-                          <p className="text-[10px] text-secondary/70 italic">{prod.name_vi}</p>
+                          <p className="text-[8px] sm:text-[10px] text-secondary/70 italic line-clamp-1 mt-0.5">{prod.name_vi}</p>
                         )}
                       </div>
                       
-                      <div className="text-right font-medium">
-                        <span className="text-primary font-semibold">{formatPriceVND(prod.price)}</span>
+                      <div className="pt-1 flex flex-col sm:flex-row sm:items-baseline justify-between gap-0.5 sm:gap-2">
+                        <span className="text-[10px] sm:text-xs text-primary font-semibold block">{formatPriceVND(prod.price)}</span>
                         {hasDiscount && (
-                          <span className="block text-[10px] text-secondary line-through opacity-75 mt-0.5">
+                          <span className="text-[8px] sm:text-[10px] text-secondary line-through opacity-75 block">
                             {formatPriceVND(prod.compare_at_price!)}
                           </span>
                         )}
