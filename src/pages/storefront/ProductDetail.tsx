@@ -394,9 +394,9 @@ export const ProductDetail: React.FC = () => {
             <div className="w-10 h-px bg-primary/20 mx-auto mt-3"></div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
+          <div className="grid grid-cols-3 sm:grid-cols-3 gap-2 sm:gap-8">
             {relatedProducts.map((p) => (
-              <div key={p.id} className="group flex flex-col space-y-4">
+              <div key={p.id} className="group flex flex-col space-y-1 sm:space-y-4">
                 <div className="relative aspect-[3/4] bg-surface overflow-hidden rounded border border-primary/5">
                   <Link to={`/products/${p.slug}`} className="block h-full w-full">
                     <img
@@ -406,18 +406,23 @@ export const ProductDetail: React.FC = () => {
                     />
                   </Link>
                 </div>
-                <div className="flex justify-between items-start text-xs tracking-wider">
+                
+                {/* Details */}
+                <div className="flex flex-col justify-between items-stretch text-left space-y-1 text-xs">
                   <div>
-                    <Link to={`/products/${p.slug}`} className="font-serif text-sm font-semibold hover:underline text-primary">
+                    <Link to={`/products/${p.slug}`} className="font-serif text-[10px] sm:text-sm font-semibold hover:underline text-primary line-clamp-2 leading-tight block">
                       {language === 'vi' ? p.name_vi : p.name_en}
                     </Link>
                     {language === 'vi' ? (
-                      <p className="text-[10px] text-secondary/70 italic mt-0.5">{p.name_en}</p>
+                      <p className="text-[8px] sm:text-[10px] text-secondary/70 italic line-clamp-1 mt-0.5">{p.name_en}</p>
                     ) : (
-                      <p className="text-[10px] text-secondary/70 italic mt-0.5">{p.name_vi}</p>
+                      <p className="text-[8px] sm:text-[10px] text-secondary/70 italic line-clamp-1 mt-0.5">{p.name_vi}</p>
                     )}
                   </div>
-                  <span className="text-primary font-semibold">{formatPriceVND(p.price)}</span>
+                  
+                  <div className="pt-1 flex flex-col sm:flex-row sm:items-baseline justify-between gap-0.5 sm:gap-2">
+                    <span className="text-[10px] sm:text-xs text-primary font-semibold block">{formatPriceVND(p.price)}</span>
+                  </div>
                 </div>
               </div>
             ))}
